@@ -1,48 +1,78 @@
 package com.example.demo;
 
-
-import java.io.*;
-import java.nio.file.*;
-import java.util.*;
-
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;  // NEW: To get UserRepository
 import org.springframework.stereotype.Service;
 
-@Service  // Tells Spring: "This class does business logic"
+import jakarta.annotation.PostConstruct;
+
+import java.time.LocalDateTime;  // NEW: To track when users log in
+import java.util.Optional;       // NEW: Wrapper that might contain a User or be empty
+
+@Service
 public class UserService {
-
-
-
-    @Value("${myfile}")
-    private String FILE_PATH; 
-
     
-    //private final String FILE_PATH = "users.txt";
-    
-    // This method reads the file and returns true if credentials match
-    public boolean authenticate(String username, String password) {
-        try {
-            // Read all lines from the file
-            List<String> lines = Files.readAllLines(Paths.get(FILE_PATH));
-            
-            // Loop through each line
-            for (String line : lines) {
-                // Split the line at the comma
-                String[] parts = line.split(",");
-                if (parts.length == 2) {
-                    String storedUser = parts[0];
-                    String storedPass = parts[1];
-                    
-                    // Check if this line matches
-                    if (storedUser.equals(username) && storedPass.equals(password)) {
-                        return true;  // Found a match
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();  // Print error if file can't be read
+    //get/check user
+    @Autowired
+    private UserRepository userRepository;
+
+
+
+     @PostConstruct
+    public void createAdminAccount() {
+        // Check if admin already exists
+        if (!userRepository.existsByUsername("123")) {
+            // Create admin account
+            User admin = new User("123", "123");
+            admin.setCreatedAt(LocalDateTime.now());
+            userRepository.save(admin);
+            System.out.println("✅ Admin account created! Username: 123, Password: 123");
+        } else {
+            System.out.println("ℹ️ Admin account already exists");
+        }
+    }
+
+
+
+    // register new user
+    public boolean register(String username, String password) {
+        
+        // NEW: Check if username already exists 
+        if (userRepository.existsByUsername(username)) {
+            return false;  
         }
         
-        return false;  // No match found
+        // make user
+        User user = new User(username, password);
+        
+        // save to db
+        userRepository.save(user);
+        
+        return true;
+    }
+    
+    // auth
+    public boolean authenticate(String username, String password) {
+        
+        //check if in db
+        Optional<User> userOpt = userRepository.findByUsername(username);
+
+        if (userOpt.isPresent()) {  // Does the Optional contain a User?
+            
+            // Get user
+            User user = userOpt.get();
+            
+            // check passw
+            if (user.getPassword().equals(password)) {
+                
+                // save last login
+                user.setLastLogin(LocalDateTime.now());
+                userRepository.save(user);  // Save the updated user back to database
+                
+                return true;
+            }
+        }
+        
+        // if no match 
+        return false;
     }
 }

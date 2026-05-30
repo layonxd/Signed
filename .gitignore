@@ -1,6 +1,11 @@
 application.properties
 
-
+.env
+*.env
+uploads/
+postgres_data/
+*.log
+logs/
 
 HELP.md
 target/

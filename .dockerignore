@@ -1,0 +1,8 @@
+target/
+.git/
+.gitignore
+.vscode/
+.idea/
+*.log
+users.txt
+application.properties

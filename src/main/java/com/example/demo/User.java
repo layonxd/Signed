@@ -22,6 +22,9 @@ public class User {
     
     @Column(name = "last_login")
     private LocalDateTime lastLogin;
+
+    @Column(nullable = false)
+    private String role = "CONSUMER";  // Default role is CONSUMER
     
     // Constructors
     public User() {}
@@ -47,4 +50,8 @@ public class User {
     
     public LocalDateTime getLastLogin() { return lastLogin; }
     public void setLastLogin(LocalDateTime lastLogin) { this.lastLogin = lastLogin; }
+
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
 }
+

@@ -3,6 +3,9 @@ package com.example.demo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;
+//import java.util.ArrayList;
+import java.util.List;
+//import java.util.stream.Collectors;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -12,4 +15,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     
     // Check if a username already exists
     boolean existsByUsername(String username);
+
+    List<User> findByRole(String role);
 }

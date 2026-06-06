@@ -3,6 +3,7 @@ package com.example.demo;
 public class LoginRequest {
     private String username;
     private String password;
+    private String role;  // ← NEW - "CREATOR" or "CONSUMER"
     
     // Getters (Spring needs these)
     public String getUsername() {
@@ -20,4 +21,13 @@ public class LoginRequest {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getRole() { 
+        return role; 
+    }  // ← NEW
+
+
+    public void setRole(String role) {
+         this.role = role; 
+    }  // ← NEW
 }

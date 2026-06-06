@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +10,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import jakarta.servlet.http.HttpSession;
+//import java.util.ArrayList;
+import java.util.List;
+//import java.util.stream.Collectors;
+import java.util.Map;
+//import java.util.HashMap;  // Also add this if you need to create Maps
 
 @RestController  // Tells Spring: "This class handles HTTP requests"
 @RequestMapping("/auth")  // All endpoints here start with /auth
@@ -69,7 +76,8 @@ public class UserController {
     public ResponseEntity<?> register(@RequestBody LoginRequest loginRequest) {
         boolean success = userService.register(
             loginRequest.getUsername(), 
-            loginRequest.getPassword()
+            loginRequest.getPassword(),
+            loginRequest.getRole()
         );
         
         if (success) {
@@ -78,6 +86,18 @@ public class UserController {
             return ResponseEntity.status(409)  // 409 Conflict
                 .body("Username already exists");
         }
+    }
+    @GetMapping("/creators")
+    public ResponseEntity<?> listCreators() {
+        List<User> creators = userService.getAllCreators();
+        // Return only safe information (exclude passwords)
+        List<Map<String, String>> creatorInfo = creators.stream()
+            .map(user -> Map.of(
+                "username", user.getUsername(),
+                "role", user.getRole()
+            ))
+            .collect(Collectors.toList());
+        return ResponseEntity.ok(creatorInfo);
     }
 }
 

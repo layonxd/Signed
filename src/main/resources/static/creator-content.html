@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Creator Content - Media Server</title>
+    <style>
+        body { font-family: Arial; max-width: 1200px; margin: 50px auto; padding: 0 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #eee; }
+        .back-btn { background: #6c757d; color: white; padding: 8px 16px; border: none; cursor: pointer; border-radius: 4px; }
+        .back-btn:hover { background: #5a6268; }
+        .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
+        .image-card { border: 1px solid #ddd; border-radius: 8px; padding: 10px; text-align: center; }
+        .image-card img { width: 100%; height: 200px; object-fit: cover; border-radius: 4px; cursor: pointer; }
+        .image-card p { margin: 10px 0 5px; font-weight: bold; }
+        .loading { text-align: center; padding: 40px; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2 id="pageTitle">Creator Content</h2>
+        <button class="back-btn" onclick="goBack()">← Back to Dashboard</button>
+    </div>
+    
+    <div id="gallery" class="gallery">
+        <div class="loading">Loading images...</div>
+    </div>
+
+    <script>
+        // Get creator name from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const creatorName = urlParams.get('creator');
+        
+        if (creatorName) {
+            document.getElementById('pageTitle').innerHTML = `🎨 ${creatorName}'s Content`;
+            loadCreatorImages();
+        } else {
+            document.getElementById('gallery').innerHTML = '<div class="loading">No creator specified.</div>';
+        }
+        
+        async function loadCreatorImages() {
+            try {
+                const response = await fetch('/images', {
+                    credentials: 'include'
+                });
+                
+                const allImages = await response.json();
+                
+                // Filter images by the selected creator
+                const creatorImages = allImages.filter(img => img.uploader === creatorName);
+                
+                if (creatorImages.length === 0) {
+                    document.getElementById('gallery').innerHTML = '<div class="loading">No images from this creator yet.</div>';
+                    return;
+                }
+                
+                displayImages(creatorImages);
+                
+            } catch (error) {
+                console.error('Error loading images:', error);
+                document.getElementById('gallery').innerHTML = '<div class="loading">Failed to load images.</div>';
+            }
+        }
+        
+        function displayImages(images) {
+            const gallery = document.getElementById('gallery');
+            gallery.innerHTML = images.map(img => `
+                <div class="image-card">
+                    <img 
+                        src="/images/${img.id}" 
+                        alt="${img.filename}"
+                        onclick="window.open('/images/${img.id}', '_blank')"
+                        title="Click to open full size"
+                    />
+                    <p>${img.filename}</p>
+                    <small>Size: ${(img.size / 1024).toFixed(1)} KB</small>
+                </div>
+            `).join('');
+        }
+        
+        function goBack() {
+            window.location.href = '/dashboard.html';
+        }
+    </script>
+</body>
+</html>

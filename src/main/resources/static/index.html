@@ -5,8 +5,26 @@
     <style>
         body { font-family: Arial; max-width: 400px; margin: 50px auto; }
         input { width: 100%; padding: 8px; margin: 5px 0; }
-        button { width: 100%; padding: 10px; background: blue; color: white; border: none; }
+        button { width: 100%; padding: 10px; background: blue; color: white; border: none; cursor: pointer; }
+        button:hover { opacity: 0.9; }
         #message { margin-top: 10px; }
+        .register-link {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #ccc;
+        }
+        .register-link a {
+            color: blue;
+            text-decoration: none;
+        }
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+        .register-btn {
+            background: green;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -17,6 +35,11 @@
         <button type="submit">Login</button>
     </form>
     <div id="message"></div>
+    
+    <div class="register-link">
+        <p>Don't have an account?</p>
+        <button onclick="window.location.href='/register.html'" class="register-btn">Register</button>
+    </div>
 
     <script>
         document.getElementById('loginForm').onsubmit = async (e) => {
@@ -32,7 +55,7 @@
             });
             
             if (response.ok) {
-                window.location.href = '/dashboard.html';  // Redirect on success
+                window.location.href = '/dashboard.html';  // Redirect to creators page
             } else {
                 const message = await response.text();
                 const messageDiv = document.getElementById('message');

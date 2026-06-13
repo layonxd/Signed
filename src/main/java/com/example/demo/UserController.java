@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +27,8 @@ public class UserController {
     @Autowired  
     private UserService userService;
     
-
+    @Autowired
+    private UserRepository userRepository;
 
     // endpoints
 
@@ -58,9 +60,19 @@ public class UserController {
     @GetMapping("/check")
     public ResponseEntity<?> checkSession(HttpSession session) {
         String loggedInUser = (String) session.getAttribute("loggedInUser");
+        Boolean isLoggedIn = (Boolean) session.getAttribute("isLoggedIn");
         
-        if (loggedInUser != null && (boolean) session.getAttribute("isLoggedIn")) {
-            return ResponseEntity.ok(loggedInUser);
+        if (loggedInUser != null && isLoggedIn != null && isLoggedIn) {
+            // Get the user from database to fetch their role
+            User user = userRepository.findByUsername(loggedInUser).orElse(null);
+            String role = (user != null) ? user.getRole() : "CONSUMER";
+            
+            // Return JSON object with both username and role
+            Map<String, String> userInfo = Map.of(
+                "username", loggedInUser,
+                "role", role
+            );
+            return ResponseEntity.ok(userInfo);
         } else {
             return ResponseEntity.status(401).body("Not logged in");
         }
@@ -89,9 +101,17 @@ public class UserController {
     }
     @GetMapping("/creators")
     public ResponseEntity<?> listCreators() {
+
+        String currentUsername = (String) session.getAttribute("loggedInUser");
+        if (currentUsername == null) {
+            return ResponseEntity.status(401).body("Please login to view creators");
+        }
+
+
         List<User> creators = userService.getAllCreators();
         // Return only safe information (exclude passwords)
         List<Map<String, String>> creatorInfo = creators.stream()
+            .filter(user -> !user.getUsername().equals(currentUsername))
             .map(user -> Map.of(
                 "username", user.getUsername(),
                 "role", user.getRole()
@@ -99,5 +119,28 @@ public class UserController {
             .collect(Collectors.toList());
         return ResponseEntity.ok(creatorInfo);
     }
+    
+    @GetMapping("/user/{username}")
+public ResponseEntity<?> getUserByUsername(@PathVariable String username, HttpSession session) {
+    String loggedInUser = (String) session.getAttribute("loggedInUser");
+    
+    // Optional: Only allow access if logged in
+    if (loggedInUser == null) {
+        return ResponseEntity.status(401).body("Not logged in");
+    }
+    
+    User user = userRepository.findByUsername(username).orElse(null);
+    if (user == null) {
+        return ResponseEntity.status(404).body("User not found");
+    }
+    
+    // Return safe user info (no password)
+    Map<String, String> userInfo = Map.of(
+        "username", user.getUsername(),
+        "role", user.getRole()
+    );
+    
+    return ResponseEntity.ok(userInfo);
+}
 }
 

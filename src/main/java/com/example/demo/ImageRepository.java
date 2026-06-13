@@ -6,6 +6,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+
+
+//REPO = BD STUFF
+
 @Repository
 public interface ImageRepository extends JpaRepository<Image, Long> {
     List<Image> findByUploader(String username);

@@ -23,7 +23,7 @@ public class User {
     @Column(name = "last_login")
     private LocalDateTime lastLogin;
 
-    @Column(nullable = false)
+    @Column(nullable = false,columnDefinition = "VARCHAR(50) DEFAULT 'CONSUMER'")
     private String role = "CONSUMER";  // Default role is CONSUMER
     
     // Constructors

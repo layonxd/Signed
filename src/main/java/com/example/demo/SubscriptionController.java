@@ -74,4 +74,5 @@ public class SubscriptionController {
         
         return ResponseEntity.ok(subscriptionService.getSubscribedCreatorUsernames(user.getId()));
     }
+    
 }

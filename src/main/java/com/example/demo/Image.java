@@ -4,6 +4,9 @@ package com.example.demo;
 import java.time.LocalDateTime;
 import jakarta.persistence.*;
 
+//CLASS STUFF
+
+
 @Entity
 @Table(name="images")
 public class Image {

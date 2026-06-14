@@ -33,7 +33,6 @@ public class ConsumerImageService {
     @Autowired
     private ConsumerImageRepository consumerImageRepository;
 
-    private final Path uploadDir = Paths.get("uploads");
 
     
     public ConsumerImage Build(Image image, String reciever) {

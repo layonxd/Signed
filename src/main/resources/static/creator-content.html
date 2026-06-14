@@ -30,7 +30,7 @@
         const creatorName = urlParams.get('creator');
         
         if (creatorName) {
-            document.getElementById('pageTitle').innerHTML = `🎨 ${creatorName}'s Content`;
+            document.getElementById('pageTitle').innerHTML = ` ${creatorName}'s Content`;
             loadCreatorImages();
         } else {
             document.getElementById('gallery').innerHTML = '<div class="loading">No creator specified.</div>';

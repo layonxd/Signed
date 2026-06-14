@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name="images")
-public class Image {
+public class ConsumerImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,19 +18,19 @@ public class Image {
     private String uniquename;
     private long size;
     private String uploader;
+    private String reciever;
     private String type;
-    private LocalDateTime uploadTime;
 
     // Constructors
-    public Image() {}
+    public ConsumerImage() {}
 
-    public Image(String filename, String uniquename, long size, String uploader, String type) {
+    public ConsumerImage(String filename, String uniquename, long size, String uploader, String reciever, String type) {
         this.filename = filename;
         this.uniquename = uniquename;
         this.size = size;
         this.uploader = uploader;
+        this.reciever = reciever;
         this.type = type;
-        this.uploadTime = LocalDateTime.now();
     }
 
     // Getters and Setters
@@ -52,6 +52,7 @@ public class Image {
     public String getType() { return type; }
     public void setType(String type) { this.type = type; }
 
-    public LocalDateTime getUploadTime() { return uploadTime; }
-    public void setUploadTime(LocalDateTime uploadTime) { this.uploadTime = uploadTime; }
+
+    public String getReciever() { return reciever; }
+    public void setReciever(String reciever) { this.reciever = reciever; }
 }

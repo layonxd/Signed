@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;  // NEW: To get UserRepository
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import jakarta.annotation.PostConstruct;
@@ -19,6 +20,9 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
 
     @PostConstruct
@@ -26,7 +30,7 @@ public class UserService {
         // Check if admin already exists
         if (!userRepository.existsByUsername("123")) {
             // Create admin account
-            User admin = new User("123", "123");
+            User admin = new User("123", passwordEncoder.encode("123"));
             admin.setCreatedAt(LocalDateTime.now());
             admin.setRole("CREATOR");  // ← Make admin a creator
             userRepository.save(admin);
@@ -41,7 +45,7 @@ public class UserService {
         // Check if admin already exists
         if (!userRepository.existsByUsername("321")) {
             // Create admin account
-            User admin = new User("321", "321");
+            User admin = new User("321", passwordEncoder.encode("321"));
             admin.setCreatedAt(LocalDateTime.now());
             admin.setRole("CONSUMER");  // ← Make admin a creator
             userRepository.save(admin);
@@ -61,8 +65,8 @@ public class UserService {
             return false;  
         }
         
-        // make user
-        User user = new User(username, password);
+        // make user (password is hashed before storage)
+        User user = new User(username, passwordEncoder.encode(password));
 
         // Set role (default to CONSUMER if invalid or not provided)
         if ("CREATOR".equalsIgnoreCase(role)) {
@@ -88,8 +92,8 @@ public class UserService {
             // Get user
             User user = userOpt.get();
             
-            // check passw
-            if (user.getPassword().equals(password)) {
+            // check passw against stored hash
+            if (passwordEncoder.matches(password, user.getPassword())) {
                 
                 // save last login
                 user.setLastLogin(LocalDateTime.now());

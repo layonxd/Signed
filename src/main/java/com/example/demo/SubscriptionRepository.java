@@ -21,6 +21,9 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
     
     // Get all subscribers of a creator
     List<Subscription> findByCreatorIdAndActiveTrue(Long creatorId);
+
+
+    List<Subscription> findByCreatorUsernameAndActiveTrue(String creatorUsername);
     
     // Delete all subscriptions for a user (when account is deleted)
     void deleteBySubscriberId(Long subscriberId);

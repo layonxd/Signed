@@ -33,11 +33,17 @@ public class ImageController {
     @Autowired 
     private SubscriptionService subscriptionService;
 
-    @Autowired  // ← ADD THIS
-    private UserRepository userRepository;  // ← ADD THIS
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private ImageRepository imageRepository;
+
+
+
+
+    @Autowired
+    private VisitsService visitsService;
 
     // PRODUCER: upload (must be logged in)
 
@@ -56,11 +62,11 @@ public class ImageController {
     }
 
     try {
-        Image saved = imageService.store(file, uploader);
+    Image saved = imageService.store(file, uploader);
         return ResponseEntity.ok(Map.of(
             "id", saved.getId(),
             "filename", saved.getFilename(),
-            "uploadedAt", saved.getUploadTime()  // fixed: was getUploadedAt()
+            "uploadedAt", saved.getUploadTime()
         ));
     } catch (IOException e) {
         return ResponseEntity.status(500).body("Upload failed: " + e.getMessage());
@@ -82,11 +88,15 @@ public class ImageController {
         List<Image> allImages = imageService.getAll();
         List<Image> accessibleImages;
         List<String> subscribedCreators = subscriptionService.getSubscribedCreatorUsernames(currentUser.getId());
-            
+        
+       
+        
         accessibleImages = allImages.stream()
             .filter(img -> subscribedCreators.contains(img.getUploader()))
             .collect(Collectors.toList());
+
         
+            
         return ResponseEntity.ok(accessibleImages);
     }
 
@@ -117,19 +127,51 @@ public class ImageController {
 
     // CONSUMER: view/download a specific image
     @GetMapping("/{id}")
-    public ResponseEntity<Resource> serveImage(@PathVariable Long id) {
-        try {
-            Resource resource = imageService.load(id);
-            String contentType = Files.probeContentType(resource.getFile().toPath());
-            return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline")
-                .body(resource);
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
+    public ResponseEntity<?> serveImage(@PathVariable Long id, HttpSession session) {
+        String username = (String) session.getAttribute("loggedInUser");
+        if (username == null) return ResponseEntity.status(401).body("Not logged in");
 
+        try {
+            User user = userRepository.findByUsername(username).orElse(null);
+            if (user == null) return ResponseEntity.status(401).body("User not found");
+
+            Image image = imageService.getImageById(id);
+            if (image == null) {
+                return ResponseEntity.status(404).body("Image not found");
+                           }
+
+            // NEW: Check if user has access
+        boolean hasAccess = false;
+        
+        // Creator always has access to their own images
+        if ("CREATOR".equals(user.getRole()) && image.getUploader().equals(username)) {
+            hasAccess = true;
+        } else {
+            // Check if user is subscribed to the creator
+            hasAccess = subscriptionService.isSubscribed(user.getId(), image.getUploader());
+        }
+
+        if (!hasAccess) {
+            return ResponseEntity.status(403).body("You need to subscribe to this creator to view this image");
+        }
+
+        // Serve the original image directly (no watermark)
+        Resource resource = imageService.load(id);
+        String contentType = Files.probeContentType(resource.getFile().toPath());
+        if (contentType == null) {
+            contentType = "application/octet-stream";
+        }
+        
+        return ResponseEntity.ok()
+            .contentType(MediaType.parseMediaType(contentType))
+            .header(HttpHeaders.CONTENT_DISPOSITION, "inline")
+            .body(resource);
+
+    } catch (Exception e) {
+        return ResponseEntity.status(500).body("Could not serve file: " + e.getMessage());
+    }
+}
+            
 
     @DeleteMapping("/{id}")
 public ResponseEntity<?> deleteImage(@PathVariable Long id, HttpSession session) {

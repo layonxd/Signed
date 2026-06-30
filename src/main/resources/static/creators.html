@@ -3,272 +3,277 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Browse Creators</title>
+    <title>Browse Creators · Signed</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: Arial, sans-serif;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            background: #f5f5f5;
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #f8f9fc;
+            color: #1e1e2a;
+            padding: 24px;
+            min-height: 100vh;
         }
-        
-        .header {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
+        .app-wrapper { max-width: 1280px; margin: 0 auto; }
+        .top-bar {
             display: flex;
-            justify-content: space-between;
+            flex-wrap: wrap;
             align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .back-btn {
-            background: #667eea;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-        }
-        
-        .back-btn:hover {
-            background: #5a67d8;
-        }
-        
-        .creator-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-        }
-        
-        .creator-card {
+            justify-content: space-between;
             background: white;
-            border-radius: 10px;
-            padding: 20px;
+            padding: 16px 28px;
+            border-radius: 28px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            margin-bottom: 32px;
+        }
+        .top-bar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 20px;
+            color: #0a0a14;
+        }
+        .top-bar-brand i { color: #6366f1; font-size: 24px; }
+        .top-bar-actions { display: flex; align-items: center; gap: 16px; }
+        .user-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f1f3f9;
+            padding: 6px 14px 6px 18px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .user-badge i { color: #6366f1; }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            background: transparent;
+            color: #1e1e2a;
+        }
+        .btn-primary {
+            background: #6366f1;
+            color: white;
+            box-shadow: 0 2px 6px rgba(99,102,241,0.25);
+        }
+        .btn-primary:hover {
+            background: #4f52e0;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 18px rgba(99,102,241,0.3);
+        }
+        .btn-outline {
+            border: 1px solid #d0d5dd;
+            background: white;
+        }
+        .btn-outline:hover { background: #f1f3f9; border-color: #b0b8c9; }
+        .btn-ghost { color: #4b5565; }
+        .btn-ghost:hover { background: #f1f3f9; }
+        .btn-subscribed {
+            background: #eef2ff;
+            color: #4f52e0;
+            border: 1px solid #d0d9ff;
+        }
+        .btn-subscribed:hover { background: #dce3ff; }
+
+        .page-header { margin-bottom: 28px; }
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.4px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .page-header h1 i { color: #6366f1; }
+        .page-header .sub { color: #5b677b; font-size: 15px; margin-top: 4px; }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 24px;
+            margin-top: 16px;
+        }
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 24px 16px 20px;
             text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            border: 1px solid #f0f2f7;
         }
-        
-        .creator-card:hover {
-            transform: translateY(-5px);
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 32px -8px rgba(0,0,0,0.08);
+            border-color: #e2e7f0;
         }
-        
-        .avatar {
-            width: 80px;
-            height: 80px;
-            background: #667eea;
-            border-radius: 50%;
+        .card-avatar {
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            border-radius: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 15px;
+            margin: 0 auto 14px;
             color: white;
-            font-size: 32px;
-            font-weight: bold;
+            font-size: 28px;
+            font-weight: 600;
+            box-shadow: 0 6px 14px rgba(99,102,241,0.2);
         }
+        .card-name { font-weight: 700; font-size: 17px; margin-bottom: 2px; }
+        .card-sub { font-size: 13px; color: #6b788e; margin-bottom: 14px; }
         
-        .creator-name {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        
-        .subscribe-btn {
-            background: #667eea;
-            color: white;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        
-        .subscribe-btn.subscribed {
-            background: #48bb78;
-        }
-        
-        .loading {
+        .empty-state {
+            background: white;
+            border-radius: 28px;
+            padding: 48px 28px;
             text-align: center;
-            padding: 50px;
-            font-size: 18px;
-            color: #666;
+            color: #5b677b;
+            border: 1px dashed #d0d5dd;
+            margin-top: 16px;
         }
-        
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .logout-btn {
-            background: #e53e3e;
-            color: white;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+        .empty-state i { font-size: 40px; color: #b0b8c9; margin-bottom: 16px; display: block; }
+        .loading-spinner { text-align: center; padding: 40px 0; color: #6b788e; }
+        .loading-spinner i { font-size: 28px; color: #6366f1; margin-bottom: 12px; display: inline-block; }
+
+        @media (max-width: 640px) {
+            .top-bar { flex-direction: column; gap: 12px; align-items: stretch; }
+            .top-bar-actions { justify-content: space-between; }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1> Browse Creators</h1>
-        <div>
-            <a href="/dashboard.html" class="back-btn">← Back to Home</a>
+    <div class="app-wrapper">
+        <header class="top-bar">
+            <div class="top-bar-brand">
+                <i class="fas fa-cube"></i>
+                <span>Media<span style="font-weight:400;color:#6366f1;">Hub</span></span>
+            </div>
+            <div class="top-bar-actions">
+                <span class="user-badge" id="userBadge">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="userDisplay">Loading...</span>
+                </span>
+                <button class="btn btn-ghost" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </header>
+
+        <div id="mainContent">
+            <div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i><div>Loading creators...</div></div>
         </div>
-    </div>
-    
-    <div id="creatorsContainer">
-        <div class="loading">Loading creators...</div>
     </div>
 
     <script>
-        // Check login status and load creators
-        checkLoginStatus();
-        loadCreators();
+        const content = document.getElementById('mainContent');
+        let currentUser = null;
 
-        async function checkLoginStatus() {
+        async function checkAuth() {
             try {
-                const response = await fetch('/auth/check', {
-                    credentials: 'include'
-                });
-                
-                if (response.ok) {
-                    const username = await response.text();
-                    const header = document.querySelector('.header');
-                    const userInfo = document.createElement('div');
-                    userInfo.className = 'user-info';
-                    userInfo.innerHTML = `
-                        <span>Welcome, ${username}!</span>
-                        <button class="logout-btn" onclick="logout()">Logout</button>
-                    `;
-                    header.appendChild(userInfo);
-                }
-            } catch (error) {
-                console.error('Error:', error);
+                const response = await fetch('/auth/check', { credentials: 'include' });
+                if (!response.ok) { window.location.href = '/index.html'; return false; }
+                const data = await response.json();
+                currentUser = data.username;
+                document.getElementById('userDisplay').textContent = currentUser;
+                return true;
+            } catch (e) {
+                window.location.href = '/index.html';
+                return false;
             }
         }
 
         async function loadCreators() {
+            if (!await checkAuth()) return;
+            
+            content.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i><div>Loading...</div></div>';
+            
             try {
-                const response = await fetch('/auth/creators', {
-                    credentials: 'include'
-                });
-                
-                if (response.ok) {
-                    const creators = await response.json();
-                    displayCreators(creators);
-                } else {
-                    document.getElementById('creatorsContainer').innerHTML = 
-                        '<div class="loading">Please <a href="/index.html">login</a> to view creators</div>';
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                document.getElementById('creatorsContainer').innerHTML = 
-                    '<div class="loading">Error loading creators</div>';
-            }
-        }
+                const r = await fetch('/auth/creators', { credentials: 'include' });
+                if (!r.ok) throw new Error('auth');
+                const creators = await r.json();
 
-        async function displayCreators(creators) {
-            const container = document.getElementById('creatorsContainer');
-            
-            if (creators.length === 0) {
-                container.innerHTML = '<div class="loading">No creators found yet!</div>';
-                return;
-            }
-            
-            // Get user's subscriptions
-            let subscriptions = [];
-            try {
-                const subResponse = await fetch('/subscriptions/my', {
-                    credentials: 'include'
-                });
-                if (subResponse.ok) {
-                    subscriptions = await subResponse.json();
+                let subs = [];
+                try {
+                    const s = await fetch('/subscriptions/my', { credentials: 'include' });
+                    if (s.ok) subs = await s.json();
+                } catch (_) {}
+
+                if (!creators || creators.length === 0) {
+                    content.innerHTML = `
+                        <div class="page-header"><h1><i class="fas fa-users"></i> Creators</h1></div>
+                        <div class="empty-state"><i class="fas fa-paint-brush"></i><p>No creators yet. Be the first!</p></div>
+                        <div style="margin-top:20px"><a href="/dashboard.html" class="btn btn-ghost"><i class="fas fa-arrow-left"></i> Back to Dashboard</a></div>
+                    `;
+                    return;
                 }
-            } catch (error) {
-                console.error('Error:', error);
-            }
-            
-            container.innerHTML = `
-                <div class="creator-grid">
-                    ${creators.map(creator => `
-                        <div class="creator-card">
-                            <div class="avatar">${creator.username.charAt(0).toUpperCase()}</div>
-                            <div class="creator-name">${creator.username}</div>
-                            <button 
-                                class="subscribe-btn ${subscriptions.includes(creator.username) ? 'subscribed' : ''}"
-                                onclick="toggleSubscription('${creator.username}')"
-                            >
-                                ${subscriptions.includes(creator.username) ? '✓ Subscribed' : '+ Subscribe'}
+
+                let cards = creators.map(c => {
+                    const isSub = subs.includes(c.username);
+                    return `
+                        <div class="card">
+                            <div class="card-avatar">${c.username.charAt(0).toUpperCase()}</div>
+                            <div class="card-name">${c.username}</div>
+                            <div class="card-sub">${c.role || 'Creator'}</div>
+                            <button class="btn ${isSub ? 'btn-subscribed' : 'btn-primary'}" onclick="toggleSubscribe('${c.username}')">
+                                ${isSub ? '<i class="fas fa-check"></i> Subscribed' : '<i class="fas fa-plus"></i> Subscribe'}
                             </button>
                         </div>
-                    `).join('')}
-                </div>
-            `;
+                    `;
+                }).join('');
+
+                content.innerHTML = `
+                    <div class="page-header"><h1><i class="fas fa-users"></i> All Creators</h1><div class="sub">Discover and subscribe</div></div>
+                    <div class="grid">${cards}</div>
+                    <div style="margin-top:24px"><a href="/dashboard.html" class="btn btn-ghost"><i class="fas fa-arrow-left"></i> Back to Dashboard</a></div>
+                `;
+            } catch (e) {
+                content.innerHTML = `
+                    <div class="empty-state"><i class="fas fa-lock"></i><p>Please login to view creators.</p>
+                    <a href="/index.html" class="btn btn-primary" style="display:inline-flex;margin-top:12px;">Login</a></div>
+                `;
+            }
         }
 
-        async function toggleSubscription(creatorUsername) {
-            // Check if logged in
-            const checkResponse = await fetch('/auth/check', {
-                credentials: 'include'
-            });
-            
-            if (!checkResponse.ok) {
-                alert('Please login first!');
-                window.location.href = '/index.html';
-                return;
-            }
-            
-            // Check current subscription status
-            const subResponse = await fetch('/subscriptions/my', {
-                credentials: 'include'
-            });
-            const subscriptions = await subResponse.json();
-            
-            if (subscriptions.includes(creatorUsername)) {
-                // Unsubscribe
-                const response = await fetch(`/subscriptions/${creatorUsername}`, {
-                    method: 'DELETE',
-                    credentials: 'include'
-                });
-                
-                if (response.ok) {
-                    alert('Unsubscribed!');
-                    loadCreators(); // Refresh
+        async function toggleSubscribe(creator) {
+            try {
+                const subsRes = await fetch('/subscriptions/my', { credentials: 'include' });
+                if (!subsRes.ok) { alert('Please login first'); return; }
+                const subs = await subsRes.json();
+                const isSub = subs.includes(creator);
+
+                const method = isSub ? 'DELETE' : 'POST';
+                const res = await fetch(`/subscriptions/${creator}`, { method, credentials: 'include' });
+                if (res.ok) {
+                    alert(isSub ? 'Unsubscribed' : 'Subscribed!');
+                    loadCreators();
                 } else {
-                    alert('Failed to unsubscribe');
+                    alert('Action failed');
                 }
-            } else {
-                // Subscribe
-                const response = await fetch(`/subscriptions/${creatorUsername}`, {
-                    method: 'POST',
-                    credentials: 'include'
-                });
-                
-                if (response.ok) {
-                    alert('Subscribed!');
-                    loadCreators(); // Refresh
-                } else {
-                    alert('Failed to subscribe');
-                }
-            }
+            } catch (_) { alert('Error'); }
         }
 
         async function logout() {
-            const response = await fetch('/auth/logout', {
-                method: 'POST',
-                credentials: 'include'
-            });
-            
-            if (response.ok) {
-                window.location.href = '/index.html';
-            }
+            await fetch('/auth/logout', { method: 'POST', credentials: 'include' });
+            window.location.href = '/index.html';
         }
+
+        loadCreators();
+        window.toggleSubscribe = toggleSubscribe;
     </script>
 </body>
 </html>

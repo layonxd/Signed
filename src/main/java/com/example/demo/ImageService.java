@@ -99,4 +99,44 @@ public class ImageService {
     public Image getImageById(Long id) {
         return imageRepository.findById(id).orElse(null);
     }
+
+    public List<Image> getImageByuploader(String uploader) {
+        return imageRepository.findByUploader(uploader);
+    }
+
+/* 
+    @Autowired
+    private SubscriptionService subscriptionService;
+
+    public ConsumerImage Build(Image image, String reciever) {
+        ConsumerImage ci = new ConsumerImage();
+        ci.setFilename(image.getFilename());
+        ci.setUniquename(image.getUniquename());
+        ci.setSize(image.getSize());
+        ci.setUploader(image.getUploader());
+        ci.setType(image.getType());
+        ci.setReciever(reciever);
+        return ci;
+    }
+
+    public boolean Makechildren(Image image, String Uploader) {
+        return true;
+        
+        List<String> subcribers = subscriptionService.getSubscribers(Uploader);
+        for (String reciever : subcribers) {
+            
+            String filename=image.getUniquename();
+            String receiver=reciever;
+            Resource fileResource = load(image.getId());
+
+            Image saved = store(fileResource, receiver);
+            
+            ConsumerImage ci = Build(image, reciever);
+            fileResource.loadAsResource(filename);
+            funcion watermark(fileResource, reciever);
+            filresource.saveAs(filename,reciever);
+            consumerImageRepository.save(ci);
+            
+        }
+ */       
 }

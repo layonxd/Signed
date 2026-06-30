@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - Media Platform</title>
+    <title>Register · Signed</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -12,29 +16,29 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: linear-gradient(135deg, #f8f9fc 0%, #eef1f8 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 24px;
         }
 
         .register-container {
             background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04);
             overflow: hidden;
             width: 100%;
-            max-width: 450px;
-            animation: fadeIn 0.5s ease-out;
+            max-width: 480px;
+            animation: fadeIn 0.4s ease-out;
         }
 
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(-20px);
+                transform: translateY(-12px);
             }
             to {
                 opacity: 1;
@@ -43,62 +47,77 @@
         }
 
         .register-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
+            padding: 32px 40px 24px;
             text-align: center;
+            border-bottom: 1px solid #f0f2f7;
         }
 
-        .register-header h1 {
+        .register-header .logo {
             font-size: 28px;
-            margin-bottom: 10px;
+            font-weight: 700;
+            color: #0a0a14;
+            margin-bottom: 6px;
+        }
+
+        .register-header .logo i {
+            color: #6366f1;
+            margin-right: 8px;
         }
 
         .register-header p {
-            opacity: 0.9;
-            font-size: 14px;
+            color: #5b677b;
+            font-size: 15px;
         }
 
         .register-body {
-            padding: 30px;
+            padding: 32px 40px 40px;
         }
 
         .form-group {
             margin-bottom: 20px;
         }
 
-        label {
+        .form-group label {
             display: block;
-            margin-bottom: 8px;
+            font-size: 14px;
             font-weight: 600;
-            color: #333;
-            font-size: 14px;
+            margin-bottom: 6px;
+            color: #1e1e2a;
         }
 
-        input, select {
+        .form-group input {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 14px;
-            transition: all 0.3s;
+            padding: 12px 16px;
+            border: 2px solid #e2e7f0;
+            border-radius: 14px;
+            font-size: 15px;
+            transition: all 0.2s;
             font-family: inherit;
+            background: white;
         }
 
-        input:focus, select:focus {
+        .form-group input:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #6366f1;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.08);
+        }
+
+        .form-group input.error {
+            border-color: #e53e3e;
+        }
+
+        .form-group input.error:focus {
+            box-shadow: 0 0 0 4px rgba(229, 62, 62, 0.08);
         }
 
         .role-options {
-            display: flex;
-            gap: 15px;
-            margin-top: 8px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 4px;
         }
 
         .role-option {
-            flex: 1;
             cursor: pointer;
         }
 
@@ -107,73 +126,92 @@
         }
 
         .role-card {
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            padding: 15px;
+            border: 2px solid #e2e7f0;
+            border-radius: 14px;
+            padding: 16px 12px;
             text-align: center;
-            transition: all 0.3s;
+            transition: all 0.2s;
             cursor: pointer;
+            background: white;
         }
 
         .role-option input:checked + .role-card {
-            border-color: #667eea;
-            background: linear-gradient(135deg, rgba(102,126,234,0.1) 0%, rgba(118,75,162,0.1) 100%);
+            border-color: #6366f1;
+            background: #f8f7ff;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.08);
         }
 
         .role-card:hover {
-            border-color: #667eea;
-            transform: translateY(-2px);
+            border-color: #b0b8c9;
+            transform: translateY(-1px);
+        }
+
+        .role-option input:checked + .role-card:hover {
+            border-color: #6366f1;
         }
 
         .role-icon {
-            font-size: 32px;
-            margin-bottom: 8px;
+            font-size: 28px;
+            margin-bottom: 6px;
+            display: block;
         }
 
         .role-title {
             font-weight: 600;
-            margin-bottom: 4px;
+            font-size: 14px;
+            color: #1e1e2a;
+            margin-bottom: 2px;
         }
 
         .role-desc {
             font-size: 12px;
-            color: #666;
+            color: #6b788e;
+            line-height: 1.4;
         }
 
         .btn-register {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #6366f1;
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 14px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 10px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+            font-family: inherit;
+            margin-top: 4px;
         }
 
-        .btn-register:hover {
+        .btn-register:hover:not(:disabled) {
+            background: #4f52e0;
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(102,126,234,0.4);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
         }
 
-        .btn-register:active {
+        .btn-register:active:not(:disabled) {
             transform: translateY(0);
+        }
+
+        .btn-register:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none !important;
         }
 
         .login-link {
             text-align: center;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #e0e0e0;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #eef0f4;
             font-size: 14px;
-            color: #666;
+            color: #5b677b;
         }
 
         .login-link a {
-            color: #667eea;
+            color: #6366f1;
             text-decoration: none;
             font-weight: 600;
         }
@@ -183,17 +221,24 @@
         }
 
         .message {
-            padding: 12px 15px;
-            border-radius: 10px;
+            padding: 12px 16px;
+            border-radius: 12px;
             margin-bottom: 20px;
             font-size: 14px;
-            animation: slideDown 0.3s ease-out;
+            animation: slideDown 0.25s ease-out;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .message i {
+            font-size: 18px;
         }
 
         @keyframes slideDown {
             from {
                 opacity: 0;
-                transform: translateY(-10px);
+                transform: translateY(-8px);
             }
             to {
                 opacity: 1;
@@ -202,94 +247,129 @@
         }
 
         .message.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+            background: #ecfdf5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
         }
 
         .message.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+            background: #fef2f2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
         }
 
         .message.info {
-            background: #d1ecf1;
-            color: #0c5460;
-            border: 1px solid #bee5eb;
+            background: #eff6ff;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
         }
 
         .hidden {
-            display: none;
+            display: none !important;
         }
 
-        .loading {
+        .spinner {
             display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 2px solid white;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
-            border-top-color: transparent;
+            border-top-color: white;
             animation: spin 0.6s linear infinite;
             margin-right: 8px;
             vertical-align: middle;
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 500px) {
+            .register-body {
+                padding: 24px 20px 32px;
+            }
+            .register-header {
+                padding: 24px 20px 20px;
+            }
+            .role-options {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            .role-card {
+                padding: 14px 10px;
+            }
+            .role-icon {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .role-options {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <div class="register-container">
         <div class="register-header">
-            <h1>🎨 Create Account</h1>
-            <p>Join our creative community</p>
+            <div class="logo">
+                <i class="fas fa-cube"></i>Signed
+            </div>
+            <p>Create your free account</p>
         </div>
-        
+
         <div class="register-body">
             <div id="messageContainer"></div>
-            
-            <form id="registerForm">
+
+            <form id="registerForm" novalidate>
                 <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" name="username" required placeholder="Choose a username">
+                    <label for="username">
+                        <i class="fas fa-user" style="color:#6366f1;margin-right:6px;"></i>Username
+                    </label>
+                    <input type="text" id="username" name="username" required placeholder="Choose a username" autocomplete="off">
                 </div>
-                
+
                 <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required placeholder="Create a password">
+                    <label for="password">
+                        <i class="fas fa-lock" style="color:#6366f1;margin-right:6px;"></i>Password
+                    </label>
+                    <input type="password" id="password" name="password" required placeholder="Create a password" autocomplete="off">
                 </div>
-                
+
                 <div class="form-group">
-                    <label>Account Type</label>
+                    <label style="margin-bottom:10px;">
+                        <i class="fas fa-user-tag" style="color:#6366f1;margin-right:6px;"></i>Account Type
+                    </label>
                     <div class="role-options">
                         <label class="role-option">
                             <input type="radio" name="role" value="CONSUMER" checked>
                             <div class="role-card">
-                                <div class="role-icon">👀</div>
+                                <span class="role-icon">👀</span>
                                 <div class="role-title">Consumer</div>
-                                <div class="role-desc">View and subscribe to creators</div>
+                                <div class="role-desc">View and subscribe</div>
                             </div>
                         </label>
                         <label class="role-option">
                             <input type="radio" name="role" value="CREATOR">
                             <div class="role-card">
-                                <div class="role-icon">🎨</div>
+                                <span class="role-icon">🎨</span>
                                 <div class="role-title">Creator</div>
-                                <div class="role-desc">Upload and share your art</div>
+                                <div class="role-desc">Upload and share</div>
                             </div>
                         </label>
                     </div>
                 </div>
-                
+
                 <button type="submit" class="btn-register" id="submitBtn">
-                    Create Account
+                    <i class="fas fa-user-plus" style="margin-right:8px;"></i>Create Account
                 </button>
             </form>
-            
+
             <div class="login-link">
-                Already have an account? <a href="/index.html">Login here</a>
+                Already have an account? <a href="/index.html">Sign in</a>
             </div>
         </div>
     </div>
@@ -298,30 +378,53 @@
         const form = document.getElementById('registerForm');
         const submitBtn = document.getElementById('submitBtn');
         const messageContainer = document.getElementById('messageContainer');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+
+        // Real-time validation feedback
+        usernameInput.addEventListener('input', function() {
+            if (this.value.length > 0 && this.value.length < 3) {
+                this.classList.add('error');
+            } else {
+                this.classList.remove('error');
+            }
+        });
+
+        passwordInput.addEventListener('input', function() {
+            if (this.value.length > 0 && this.value.length < 3) {
+                this.classList.add('error');
+            } else {
+                this.classList.remove('error');
+            }
+        });
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
-            // Get form values
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value;
+
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value;
             const role = document.querySelector('input[name="role"]:checked').value;
-            
-            // Validate input
+
+            // Clear previous messages
+            messageContainer.innerHTML = '';
+
+            // Validate
             if (!username || username.length < 3) {
                 showMessage('Username must be at least 3 characters', 'error');
+                usernameInput.focus();
                 return;
             }
-            
+
             if (!password || password.length < 3) {
                 showMessage('Password must be at least 3 characters', 'error');
+                passwordInput.focus();
                 return;
             }
-            
-            // Show loading state
+
+            // Loading state
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '<span class="loading"></span> Creating account...';
-            
+            submitBtn.innerHTML = '<span class="spinner"></span> Creating account...';
+
             try {
                 const response = await fetch('/auth/register', {
                     method: 'POST',
@@ -329,81 +432,68 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        username: username,
-                        password: password,
-                        role: role
+                        username,
+                        password,
+                        role
                     })
                 });
-                
+
                 const message = await response.text();
-                
+
                 if (response.ok) {
-                    // Success - redirect to login page after 2 seconds
-                    showMessage(message + ' Redirecting to login...', 'success');
-                    
-                    // Clear form
+                    showMessage(message + ' Redirecting to login…', 'success');
                     form.reset();
-                    
-                    // Redirect after 2 seconds
+                    usernameInput.classList.remove('error');
+                    passwordInput.classList.remove('error');
+
                     setTimeout(() => {
                         window.location.href = '/index.html';
                     }, 2000);
                 } else if (response.status === 409) {
-                    // Username already exists
                     showMessage(message, 'error');
+                    usernameInput.focus();
                 } else {
-                    // Other error
                     showMessage('Registration failed: ' + message, 'error');
                 }
             } catch (error) {
                 console.error('Error:', error);
                 showMessage('Network error. Please check if the server is running.', 'error');
             } finally {
-                // Reset button
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = 'Create Account';
+                submitBtn.innerHTML = '<i class="fas fa-user-plus" style="margin-right:8px;"></i>Create Account';
             }
         });
-        
+
         function showMessage(message, type) {
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                info: 'fa-info-circle'
+            };
+
             messageContainer.innerHTML = `
                 <div class="message ${type}">
-                    ${message}
+                    <i class="fas ${icons[type] || icons.info}"></i>
+                    <span>${message}</span>
                 </div>
             `;
-            
-            // Auto-hide after 5 seconds
-            setTimeout(() => {
-                const msgDiv = messageContainer.querySelector('.message');
-                if (msgDiv) {
-                    msgDiv.style.opacity = '0';
-                    setTimeout(() => {
-                        if (messageContainer.innerHTML.includes(msgDiv.outerHTML)) {
-                            messageContainer.innerHTML = '';
-                        }
-                    }, 300);
-                }
-            }, 5000);
+
+            // Auto-hide after 5 seconds for non-success messages
+            if (type !== 'success') {
+                setTimeout(() => {
+                    const msgDiv = messageContainer.querySelector('.message');
+                    if (msgDiv) {
+                        msgDiv.style.opacity = '0';
+                        msgDiv.style.transition = 'opacity 0.3s';
+                        setTimeout(() => {
+                            if (messageContainer.contains(msgDiv)) {
+                                messageContainer.innerHTML = '';
+                            }
+                        }, 300);
+                    }
+                }, 5000);
+            }
         }
-        
-        // Add real-time validation
-        document.getElementById('username').addEventListener('input', (e) => {
-            const username = e.target.value;
-            if (username.length > 0 && username.length < 3) {
-                e.target.style.borderColor = '#e53e3e';
-            } else {
-                e.target.style.borderColor = '#e0e0e0';
-            }
-        });
-        
-        document.getElementById('password').addEventListener('input', (e) => {
-            const password = e.target.value;
-            if (password.length > 0 && password.length < 3) {
-                e.target.style.borderColor = '#e53e3e';
-            } else {
-                e.target.style.borderColor = '#e0e0e0';
-            }
-        });
     </script>
 </body>
 </html>

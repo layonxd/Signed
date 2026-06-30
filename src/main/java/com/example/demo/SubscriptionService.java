@@ -73,4 +73,12 @@ public class SubscriptionService {
         
         return subscriptionRepository.existsBySubscriberIdAndCreatorIdAndActiveTrue(subscriberId, creator.getId());
     }
+
+    /* Get all subscribers to a creator */
+    public List<String> getSubscribers(String creatorUsername) {
+        return subscriptionRepository.findByCreatorUsernameAndActiveTrue(creatorUsername)
+            .stream()
+            .map(sub -> sub.getSubscriber().getUsername())
+            .collect(Collectors.toList());
+    }
 }

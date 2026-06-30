@@ -88,36 +88,31 @@ jobs:
   #    (Postgres driver, Spring Boot, spring-security-crypto, etc.)
   # ---------------------------------------------------------------
   dependency-check:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v4
 
-      - uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-          cache: maven
+    - uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: maven
 
-      - run: chmod +x mvnw
+    - run: chmod +x mvnw
 
-      # NVD_API_KEY is optional but strongly recommended - without it the
-      # NVD database download is heavily rate-limited and this step can
-      # take 30+ minutes. Get a free key at
-      # https://nvd.nist.gov/developers/request-an-api-key
-      # then add it as a repo secret named NVD_API_KEY
-      # (Settings -> Secrets and variables -> Actions).
-      - name: Run OWASP Dependency-Check
-        run: |
-          ./mvnw org.owasp:dependency-check-maven:check \
-            -Dnvd.api.key=${{ secrets.NVD_API_KEY }} \
-            -DfailBuildOnCVSS=9
+    # REMOVE the NVD_API_KEY parameter - use public rate-limited API
+    - name: Run OWASP Dependency-Check
+      timeout-minutes: 15
+      run: |
+        ./mvnw org.owasp:dependency-check-maven:check \
+          -DfailBuildOnCVSS=9
 
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: dependency-check-report
-          path: target/dependency-check-report.html
-          retention-days: 7
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: dependency-check-report
+        path: target/dependency-check-report.html
+        retention-days: 7
 
   # ---------------------------------------------------------------
   # 5. OWASP ZAP baseline scan - tests the *running* app for
